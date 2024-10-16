@@ -22,10 +22,13 @@ const SignIn = () => {
   const login = async () => {
     setLoading(true); // Mulai loading saat klik login
     try {
-      const response = await axios.post("http://localhost:5000/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_HOST}/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
       console.log("Login Success");
       if (response.status === 200) {
         localStorage.setItem("token", response.data?.token);
