@@ -11,13 +11,13 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false); // State untuk loading
 
   // Cek apakah user sudah login dengan token
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      // Jika user sudah login, redirect ke halaman utama
-      navigate("/");
-    }
-  }, [navigate]);
+  //   useEffect(() => {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       // Jika user sudah login, redirect ke halaman utama
+  //       navigate("/");
+  //     }
+  //   }, [navigate]);
 
   const login = async () => {
     setLoading(true); // Mulai loading saat klik login
@@ -27,11 +27,16 @@ const SignIn = () => {
         {
           email,
           password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-      console.log("Login Success");
+      console.log({ response });
       if (response.status === 200) {
-        localStorage.setItem("token", response.data?.token);
+        localStorage.setItem("token", response?.data?.token);
         Swal.fire({
           icon: "success",
           title: "Login Successful",
@@ -51,6 +56,18 @@ const SignIn = () => {
       setLoading(false); // Selesai loading
     }
   };
+  const [isLogin, setIsLogin] = useState(false);
+  // akan dieksekusi ketika website pertama kali dimuat
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLogin(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    isLogin && navigate("/");
+  });
 
   return (
     <div className="w-full h-full mx-auto ">
